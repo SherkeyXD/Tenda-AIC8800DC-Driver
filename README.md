@@ -4,7 +4,7 @@
 
 ## 安装
 
-下载 [Release 中的 deb 包]() 到本地，然后执行
+下载 [Release 中的 deb 包](https://github.com/SherkeyXD/Tenda-AIC8800DC/releases/download/1.0.13/ax300-wifi-adapter-linux-driver_1.0.13+kernel6.19-1.deb) 到本地，然后执行
 
 ```bash
 sudo apt install ./ax300-wifi-adapter-linux-driver_1.0.13+kernel6.19-1.deb
