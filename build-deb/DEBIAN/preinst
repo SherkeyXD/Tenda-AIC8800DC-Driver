@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+echo "Install aic8800 wifi driver!!!!!"
+exit 0

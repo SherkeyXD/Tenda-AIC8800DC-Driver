@@ -1,0 +1,36 @@
+#!/bin/bash
+set -e
+
+SRC_ROOT="/usr/src/AIC8800"
+DRV_DIR="${SRC_ROOT}/drivers/aic8800"
+
+if [ -f "${SRC_ROOT}/aic.rules" ]; then
+    cp "${SRC_ROOT}/aic.rules" /etc/udev/rules.d/99-aic8800.rules
+    udevadm control --reload || true
+    udevadm trigger || true
+fi
+echo "udev done"
+
+if [ -L /dev/aicudisk ]; then
+    echo "device exist"
+    eject /dev/aicudisk || true
+else
+    echo "device not exist"
+fi
+
+rm -rf /lib/firmware/aic8800D80 /lib/firmware/aic8800DC
+cp -rf "${SRC_ROOT}/fw/aic8800D80" /lib/firmware/
+cp -rf "${SRC_ROOT}/fw/aic8800DC" /lib/firmware/
+echo "cp fw done"
+
+cd "${DRV_DIR}"
+make
+make install
+depmod -a || true
+
+modprobe cfg80211 || true
+modprobe aic_load_fw || insmod "${DRV_DIR}/aic_load_fw/aic_load_fw.ko"
+modprobe aic8800_fdrv || insmod "${DRV_DIR}/aic8800_fdrv/aic8800_fdrv.ko"
+
+echo "Install aic8800 wifi driver successful!!!!!"
+exit 0

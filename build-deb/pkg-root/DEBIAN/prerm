@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+echo "Uninstall aic8800 wifi driver!!!!!"
+
+rm -f /etc/udev/rules.d/99-aic8800.rules
+udevadm control --reload || true
+
+rmmod aic8800_fdrv 2>/dev/null || true
+rmmod aic_load_fw 2>/dev/null || true
+
+if [ -d /usr/src/AIC8800/drivers/aic8800 ]; then
+    cd /usr/src/AIC8800/drivers/aic8800
+    make uninstall || true
+    make clean || true
+fi
+
+rm -rf /lib/firmware/aic8800D80/
+rm -rf /lib/firmware/aic8800DC/
+rm -rf /usr/src/AIC8800/
+rm -rf /AIC8800/
